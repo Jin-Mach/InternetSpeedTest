@@ -23,6 +23,11 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.12',
+    python_requires=">=3.12",
+    entry_points={
+        "console_scripts": [
+            "internet_speed_test=speed_test:main",
+            ],
+        },
     keywords="internet speed test, pyqt6, speedtest-cli",
 )
