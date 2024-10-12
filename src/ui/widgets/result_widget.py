@@ -23,9 +23,9 @@ class ResultWidget(QWidget):
     def create_gui(self) -> None:
         main_layout = QHBoxLayout()
 
-        self.ping_label = QLabel("100")
-        self.download_label = QLabel("100")
-        self.upload_label = QLabel("100")
+        self.ping_label = QLabel("N/A")
+        self.download_label = QLabel("N/A")
+        self.upload_label = QLabel("N/A")
 
         ping_widget = self.create_widget(ping_icon, "Ping", self.ping_label, "ms")
         download_widget = self.create_widget(download_icon, "Download", self.download_label, "Mbps")

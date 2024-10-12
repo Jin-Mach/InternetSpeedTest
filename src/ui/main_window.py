@@ -4,7 +4,10 @@ from PyQt6.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QPushButton, QHBo
 from src.ui.widgets.result_widget import ResultWidget
 from src.ui.widgets.info_widget import InfoWidget
 
+from src.ui.widgets.progress_dialog import ProgressDialog
 
+
+# noinspection PyUnresolvedReferences
 class MainWindow(QMainWindow):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
@@ -23,6 +26,7 @@ class MainWindow(QMainWindow):
         button_layout = QHBoxLayout()
         start_test_button = QPushButton("Test")
         start_test_button.setFixedSize(120, 30)
+        start_test_button.clicked.connect(self.start_test)
         button_layout.addStretch()
         button_layout.addWidget(start_test_button)
         button_layout.addStretch()
@@ -33,3 +37,7 @@ class MainWindow(QMainWindow):
         main_layout.addLayout(button_layout)
         central_widget.setLayout(main_layout)
         self.setCentralWidget(central_widget)
+
+    def start_test(self):
+        dialog = ProgressDialog(self)
+        dialog.exec()
