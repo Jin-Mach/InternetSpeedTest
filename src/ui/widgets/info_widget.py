@@ -31,7 +31,10 @@ class InfoWidget(QWidget):
         main_layout.addRow(time_text_label, self.time_result_label)
         self.setLayout(main_layout)
 
-    def update_info(self, server_info: str, location_info: str, time_info: str) -> None:
-        self.server_result_label.setText(server_info)
-        self.location_result_label.setText(location_info)
-        self.time_result_label.setText(time_info)
+    def update_info(self, server_owner: str, server_location: str, time_test: str) -> None:
+        try:
+            self.server_result_label.setText(server_owner)
+            self.location_result_label.setText(server_location)
+            self.time_result_label.setText(time_test)
+        except Exception as e:
+            print(e)

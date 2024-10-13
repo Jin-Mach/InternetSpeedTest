@@ -21,8 +21,8 @@ class MainWindow(QMainWindow):
         main_layout = QVBoxLayout()
         main_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
 
-        result_widget = ResultWidget(self)
-        info_widget = InfoWidget(self)
+        self.result_widget = ResultWidget(self)
+        self.info_widget = InfoWidget(self)
 
         button_layout = QHBoxLayout()
         start_test_button = QPushButton("Test")
@@ -32,8 +32,8 @@ class MainWindow(QMainWindow):
         button_layout.addWidget(start_test_button)
         button_layout.addStretch()
 
-        main_layout.addWidget(result_widget)
-        main_layout.addWidget(info_widget)
+        main_layout.addWidget(self.result_widget)
+        main_layout.addWidget(self.info_widget)
         main_layout.addStretch()
         main_layout.addLayout(button_layout)
         central_widget.setLayout(main_layout)
@@ -41,6 +41,6 @@ class MainWindow(QMainWindow):
 
     def start_test(self):
         test_thread = SpeedTestThread()
-        dialog = ProgressDialog(test_thread, self)
+        dialog = ProgressDialog(test_thread, self.result_widget, self)
         test_thread.start()
         dialog.exec()

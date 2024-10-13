@@ -1,13 +1,14 @@
 from PyQt6.QtCore import Qt, QThread
-from PyQt6.QtWidgets import QDialog, QVBoxLayout, QProgressBar, QPushButton, QHBoxLayout
+from PyQt6.QtWidgets import QDialog, QVBoxLayout, QProgressBar, QPushButton, QHBoxLayout, QWidget
 
 
 # noinspection PyUnresolvedReferences
 class ProgressDialog(QDialog):
-    def __init__(self, thread: QThread, parent=None) -> None:
+    def __init__(self, thread: QThread, result_widget: QWidget, parent=None) -> None:
         super().__init__(parent)
         self.thread = thread
         self.thread.signal.connect(self.test_completed)
+        self.result_widget = result_widget
         self.setWindowTitle("Just a Moment... Testing Your Connection...")
         self.setFixedSize(300, 70)
         self.create_gui()
@@ -34,8 +35,12 @@ class ProgressDialog(QDialog):
         main_layout.addLayout(button_layout)
         self.setLayout(main_layout)
 
-    def test_completed(self) -> None:
-        self.accept()
+    def test_completed(self, ping: int, download: float, upload: float) -> None:
+        try:
+            self.result_widget.update_results(ping, download, upload)
+            self.accept()
+        except Exception as e:
+            print(e)
 
     def cancel_thread(self) -> None:
         self.thread.stop_thread()

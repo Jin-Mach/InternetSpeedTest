@@ -1,28 +1,26 @@
-import time
 from PyQt6.QtCore import QThread, pyqtSignal
+
+from src.utility.connection_test import connection_results
 
 
 # noinspection PyUnresolvedReferences
 class SpeedTestThread(QThread):
-    signal = pyqtSignal()
+    signal = pyqtSignal(int, float, float)
 
     def __init__(self) -> None:
         super().__init__()
         self.running = True
 
     def run(self) -> None:
-        print("Start test...")
-
-        for i in range(5):
-            if not self.running:
-                break
-            time.sleep(1)
-            print(f"Testing... {i + 1}s")
-        if self.running:
-            self.signal.emit()
-            print("Test completed...")
-        else:
-            print("Canceled...")
+        try:
+            while self.running:
+                print("start...")
+                ping, download, upload = connection_results()
+                self.signal.emit(ping, download, upload)
+                print("completed")
+        except Exception as e:
+            print(e)
 
     def stop_thread(self) -> None:
+        print("cancel")
         self.running = False

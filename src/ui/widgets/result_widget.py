@@ -13,7 +13,7 @@ upload_icon = str(pathlib.Path.joinpath(base_directory, "icons", "upload_icon.pn
 
 class ResultWidget(QWidget):
     basic_font = QFont("Arial", 10, QFont.Weight.Bold)
-    result_font = QFont("Arial", 40, QFont.Weight.Bold)
+    result_font = QFont("Arial", 30, QFont.Weight.Bold)
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
@@ -69,7 +69,10 @@ class ResultWidget(QWidget):
         widget.setLayout(layout)
         return widget
 
-    def update_results(self, ping_result: str, download_result: str, upload_result: str) -> None:
-        self.ping_label.setText(ping_result)
-        self.download_label.setText(download_result)
-        self.upload_label.setText(upload_result)
+    def update_results(self, ping_result: int, download_result: float, upload_result: float) -> None:
+        try:
+            self.ping_label.setText(str(ping_result))
+            self.download_label.setText(str(download_result))
+            self.upload_label.setText(str(upload_result))
+        except Exception as e:
+            print(e)
