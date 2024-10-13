@@ -13,10 +13,10 @@ class InfoWidget(QWidget):
     def create_gui(self) -> None:
         main_layout = QFormLayout()
 
-        server_text_label = QLabel("Server: ")
-        server_text_label.setFont(self.basic_font)
-        self.server_result_label = QLabel("N/A")
-        self.server_result_label.setFont(self.basic_font)
+        provider_text_label = QLabel("Provider: ")
+        provider_text_label.setFont(self.basic_font)
+        self.provider_result_label = QLabel("N/A")
+        self.provider_result_label.setFont(self.basic_font)
         location_text_label = QLabel("Location: ")
         location_text_label.setFont(self.basic_font)
         self.location_result_label = QLabel("N/A")
@@ -26,14 +26,14 @@ class InfoWidget(QWidget):
         self.time_result_label = QLabel("N/A")
         self.time_result_label.setFont(self.basic_font)
 
-        main_layout.addRow(server_text_label, self.server_result_label)
+        main_layout.addRow(provider_text_label, self.provider_result_label)
         main_layout.addRow(location_text_label, self.location_result_label)
         main_layout.addRow(time_text_label, self.time_result_label)
         self.setLayout(main_layout)
 
-    def update_info(self, server_owner: str, server_location: str, time_test: str) -> None:
+    def update_info(self, server_provider: str, server_location: str, time_test: str) -> None:
         try:
-            self.server_result_label.setText(server_owner)
+            self.provider_result_label.setText(server_provider)
             self.location_result_label.setText(server_location)
             self.time_result_label.setText(time_test)
         except Exception as e:

@@ -39,8 +39,11 @@ class MainWindow(QMainWindow):
         central_widget.setLayout(main_layout)
         self.setCentralWidget(central_widget)
 
-    def start_test(self):
-        test_thread = SpeedTestThread()
-        dialog = ProgressDialog(test_thread, self.result_widget, self)
-        test_thread.start()
-        dialog.exec()
+    def start_test(self) -> None:
+        try:
+            test_thread = SpeedTestThread()
+            dialog = ProgressDialog(test_thread, self.result_widget, self.info_widget, self)
+            test_thread.start()
+            dialog.exec()
+        except Exception as e:
+            print(e)

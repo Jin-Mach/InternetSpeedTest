@@ -5,7 +5,7 @@ from src.utility.connection_test import connection_results
 
 # noinspection PyUnresolvedReferences
 class SpeedTestThread(QThread):
-    signal = pyqtSignal(int, float, float)
+    signal = pyqtSignal(int, float, float, str, str, str)
 
     def __init__(self) -> None:
         super().__init__()
@@ -15,9 +15,10 @@ class SpeedTestThread(QThread):
         try:
             while self.running:
                 print("start...")
-                ping, download, upload = connection_results()
-                self.signal.emit(ping, download, upload)
+                ping, download, upload, server_provider, server_location, test_time = connection_results()
+                self.signal.emit(ping, download, upload, server_provider, server_location, test_time)
                 print("completed")
+                self.running = False
         except Exception as e:
             print(e)
 
