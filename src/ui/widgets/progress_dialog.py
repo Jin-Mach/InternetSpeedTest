@@ -1,6 +1,8 @@
 from PyQt6.QtCore import Qt, QThread
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QProgressBar, QPushButton, QHBoxLayout, QWidget
 
+from src.utility.error_manager import ErrorManager
+
 
 # noinspection PyUnresolvedReferences
 class ProgressDialog(QDialog):
@@ -36,13 +38,14 @@ class ProgressDialog(QDialog):
         main_layout.addLayout(button_layout)
         self.setLayout(main_layout)
 
-    def test_completed(self, ping: int, download: float, upload: float, server_provider: str, server_location: str, time_test: str) -> None:
+    def test_completed(self, ping: int, download: float, upload: float, server_provider: str, server_location: str,
+                       time_test: str) -> None:
         try:
             self.result_widget.update_results(ping, download, upload)
             self.info_widget.update_info(server_provider, server_location, time_test)
             self.accept()
         except Exception as e:
-            print(e)
+            ErrorManager.filter_error(e, self)
 
     def cancel_thread(self) -> None:
         self.thread.stop_thread()

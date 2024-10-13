@@ -4,6 +4,8 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon, QFont
 from PyQt6.QtWidgets import QWidget, QLabel, QHBoxLayout, QVBoxLayout
 
+from src.utility.error_manager import ErrorManager
+
 base_directory = pathlib.Path(__file__).parent.parent.parent
 
 ping_icon = str(pathlib.Path.joinpath(base_directory, "icons", "ping_icon.png"))
@@ -75,4 +77,4 @@ class ResultWidget(QWidget):
             self.download_label.setText(str(download_result))
             self.upload_label.setText(str(upload_result))
         except Exception as e:
-            print(e)
+            ErrorManager.filter_error(e, self)

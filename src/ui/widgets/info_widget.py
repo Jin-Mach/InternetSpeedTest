@@ -1,6 +1,8 @@
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QWidget, QFormLayout, QLabel
 
+from src.utility.error_manager import ErrorManager
+
 
 class InfoWidget(QWidget):
     basic_font = QFont("Arial", 10, QFont.Weight.Bold)
@@ -37,4 +39,4 @@ class InfoWidget(QWidget):
             self.location_result_label.setText(server_location)
             self.time_result_label.setText(time_test)
         except Exception as e:
-            print(e)
+            ErrorManager.filter_error(e, self)
