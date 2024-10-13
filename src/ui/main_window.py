@@ -5,6 +5,7 @@ from src.ui.widgets.result_widget import ResultWidget
 from src.ui.widgets.info_widget import InfoWidget
 
 from src.ui.widgets.progress_dialog import ProgressDialog
+from src.utility.speed_test_thread import SpeedTestThread
 
 
 # noinspection PyUnresolvedReferences
@@ -39,5 +40,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(central_widget)
 
     def start_test(self):
-        dialog = ProgressDialog(self)
+        test_thread = SpeedTestThread()
+        dialog = ProgressDialog(test_thread, self)
+        test_thread.start()
         dialog.exec()
