@@ -4,7 +4,8 @@ from PyQt6.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QPushButton, QHBo
 from src.ui.widgets.result_widget import ResultWidget
 from src.ui.widgets.info_widget import InfoWidget
 from src.ui.widgets.progress_dialog import ProgressDialog
-from src.utility.speed_test_thread import SpeedTestThread
+from src.utility.speed_test import SpeedTest
+# from src.utility.speed_test_thread import SpeedTestThread
 from src.utility.error_manager import ErrorManager
 
 
@@ -41,9 +42,8 @@ class MainWindow(QMainWindow):
 
     def start_test(self) -> None:
         try:
-            test_thread = SpeedTestThread()
+            test_thread = SpeedTest(self)
             dialog = ProgressDialog(test_thread, self.result_widget, self.info_widget, self)
-            test_thread.start()
             dialog.exec()
         except Exception as e:
             ErrorManager.filter_error(e, self)

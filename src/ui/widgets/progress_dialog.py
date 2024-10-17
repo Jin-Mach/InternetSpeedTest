@@ -1,5 +1,5 @@
 from PyQt6.QtCore import Qt, QThread
-from PyQt6.QtWidgets import QDialog, QVBoxLayout, QProgressBar, QPushButton, QHBoxLayout, QWidget
+from PyQt6.QtWidgets import QDialog, QVBoxLayout, QProgressBar, QPushButton, QHBoxLayout, QWidget, QMessageBox
 
 from src.utility.error_manager import ErrorManager
 
@@ -9,7 +9,9 @@ class ProgressDialog(QDialog):
     def __init__(self, thread: QThread, result_widget: QWidget, info_widget: QWidget, parent=None) -> None:
         super().__init__(parent)
         self.thread = thread
+        self.thread.error_signal.connect(self.show_error)
         self.thread.signal.connect(self.test_completed)
+        self.thread.start()
         self.result_widget = result_widget
         self.info_widget = info_widget
         self.setWindowTitle("Just a Moment... Testing Your Connection...")
@@ -50,3 +52,7 @@ class ProgressDialog(QDialog):
     def cancel_thread(self) -> None:
         self.thread.stop_thread()
         self.reject()
+
+    def show_error(self, exception: Exception) -> None:
+        self.close()
+        ErrorManager.filter_error(exception, self)
