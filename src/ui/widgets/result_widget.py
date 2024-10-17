@@ -5,6 +5,7 @@ from PyQt6.QtGui import QIcon, QFont
 from PyQt6.QtWidgets import QWidget, QLabel, QHBoxLayout, QVBoxLayout
 
 from src.utility.error_manager import ErrorManager
+from src.utility.logging_manager import LoggingManager
 
 base_directory = pathlib.Path(__file__).parent.parent.parent
 
@@ -77,4 +78,6 @@ class ResultWidget(QWidget):
             self.download_label.setText(str(download_result))
             self.upload_label.setText(str(upload_result))
         except Exception as e:
+            logging_manager = LoggingManager()
+            logging_manager.write_log(str(e))
             ErrorManager.filter_error(e, self)

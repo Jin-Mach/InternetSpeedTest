@@ -2,6 +2,7 @@ from PyQt6.QtCore import Qt, QThread
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QProgressBar, QPushButton, QHBoxLayout, QWidget, QMessageBox
 
 from src.utility.error_manager import ErrorManager
+from src.utility.logging_manager import LoggingManager
 
 
 # noinspection PyUnresolvedReferences
@@ -14,6 +15,7 @@ class ProgressDialog(QDialog):
         self.thread.start()
         self.result_widget = result_widget
         self.info_widget = info_widget
+        self.logging_manager = LoggingManager()
         self.setWindowTitle("Just a Moment... Testing Your Connection...")
         self.setFixedSize(300, 70)
         self.create_gui()
@@ -47,6 +49,7 @@ class ProgressDialog(QDialog):
             self.info_widget.update_info(server_provider, server_location, time_test)
             self.accept()
         except Exception as e:
+            self.logging_manager.write_log(str(e))
             ErrorManager.filter_error(e, self)
 
     def cancel_thread(self) -> None:
@@ -55,4 +58,5 @@ class ProgressDialog(QDialog):
 
     def show_error(self, exception: Exception) -> None:
         self.close()
+        self.logging_manager.write_log(str(exception))
         ErrorManager.filter_error(exception, self)

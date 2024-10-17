@@ -3,6 +3,8 @@ from speedtest import SpeedtestConfigError, ConfigRetrievalError, SpeedtestCLIEr
     SpeedtestHTTPError, NoMatchedServers, SpeedtestBestServerFailure, ShareResultsConnectFailure, SpeedtestException, \
     SpeedtestMissingBestServer
 
+from src.utility.logging_manager import LoggingManager
+
 
 class ErrorManager:
 
@@ -49,4 +51,6 @@ class ErrorManager:
             if "Errno 11001" in str(exception):
                 return ErrorManager.show_error_message(f"Internet connection error: {str(exception).strip('<>')}", parent)
         except Exception as e:
+            loggin_manager = LoggingManager()
+            loggin_manager.write_log(str(e))
             return ErrorManager.show_error_message(f"Unknown error: {str(e)}", parent)
