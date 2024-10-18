@@ -7,10 +7,9 @@ from PyQt6.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QPushButton, QHBo
 from src.ui.widgets.result_widget import ResultWidget
 from src.ui.widgets.info_widget import InfoWidget
 from src.ui.widgets.progress_dialog import ProgressDialog
-from src.utility.logging_manager import LoggingManager
 from src.utility.speed_test import SpeedTest
 from src.utility.error_manager import ErrorManager
-from src.utility.tray_icon import TrayIcon
+from src.utility.logging_manager import setup_logger
 
 application_icon = str(pathlib.Path(__file__).parent.parent.joinpath("icons", "application_icon.png"))
 
@@ -23,7 +22,6 @@ class MainWindow(QMainWindow):
         self.setWindowIcon(QIcon(application_icon))
         self.setFixedSize(450, 350)
         self.create_gui()
-        TrayIcon(self)
 
     def create_gui(self) -> None:
         central_widget = QWidget()
@@ -54,6 +52,5 @@ class MainWindow(QMainWindow):
             dialog = ProgressDialog(test_thread, self.result_widget, self.info_widget, self)
             dialog.exec()
         except Exception as e:
-            logging_manager = LoggingManager()
-            logging_manager.write_log(str(e))
-            ErrorManager.filter_error(e, self)
+            setup_logger().error(str(e))
+            ErrorManager.show_error_message(str(e), self)

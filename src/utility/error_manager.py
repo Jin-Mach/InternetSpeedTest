@@ -1,9 +1,6 @@
 from PyQt6.QtWidgets import QMessageBox, QPushButton, QApplication
-from speedtest import SpeedtestConfigError, ConfigRetrievalError, SpeedtestCLIError, SpeedtestServersError, \
-    SpeedtestHTTPError, NoMatchedServers, SpeedtestBestServerFailure, ShareResultsConnectFailure, SpeedtestException, \
-    SpeedtestMissingBestServer
 
-from src.utility.logging_manager import LoggingManager
+from src.utility.tray_icon import TrayIcon
 
 
 class ErrorManager:
@@ -24,33 +21,9 @@ class ErrorManager:
         message_box.addButton(cancel_button, QMessageBox.ButtonRole.RejectRole)
         message_box.exec()
 
+        tray_icon = TrayIcon()
+        tray_icon.showMessage("InternetSpeedTest", "Test failed...", tray_icon.MessageIcon.Information, 3000)
+
         if message_box.clickedButton() == copy_button:
             QApplication.clipboard().setText(error_message)
             message_box.close()
-
-    @staticmethod
-    def filter_error(exception: Exception, parent=None) -> None:
-        speedtest_errors = {
-            SpeedtestConfigError: "Error loading configuration.",
-            ConfigRetrievalError: "Error retrieving configuration.",
-            SpeedtestCLIError: "General CLI error.",
-            SpeedtestServersError: "Error loading servers.",
-            SpeedtestHTTPError: "Error in HTTP requests.",
-            NoMatchedServers: "No servers were found.",
-            SpeedtestBestServerFailure: "Error finding the best server.",
-            ShareResultsConnectFailure: "Error when attempting to share results.",
-            SpeedtestException: "General speedtest exception.",
-            SpeedtestMissingBestServer: "Error when the best server is missing."
-        }
-
-        try:
-            for error_type, message in speedtest_errors.items():
-                if isinstance(exception, error_type):
-                    return ErrorManager.show_error_message(f"{message}.\nError: {exception}", parent)
-
-            if "Errno 11001" in str(exception):
-                return ErrorManager.show_error_message(f"Internet connection error: {str(exception).strip('<>')}", parent)
-        except Exception as e:
-            loggin_manager = LoggingManager()
-            loggin_manager.write_log(str(e))
-            return ErrorManager.show_error_message(f"Unknown error: {str(e)}", parent)

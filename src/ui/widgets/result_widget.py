@@ -2,10 +2,11 @@ import pathlib
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon, QFont
-from PyQt6.QtWidgets import QWidget, QLabel, QHBoxLayout, QVBoxLayout, QFrame
+from PyQt6.QtWidgets import QWidget, QLabel, QHBoxLayout, QVBoxLayout, QFrame, QSystemTrayIcon
 
 from src.utility.error_manager import ErrorManager
-from src.utility.logging_manager import LoggingManager
+from src.utility.logging_manager import setup_logger
+from src.utility.tray_icon import TrayIcon
 
 base_directory = pathlib.Path(__file__).parent.parent.parent
 
@@ -81,7 +82,11 @@ class ResultWidget(QWidget):
             self.ping_label.setText(str(ping_result))
             self.download_label.setText(str(download_result))
             self.upload_label.setText(str(upload_result))
+
+            if QSystemTrayIcon.isSystemTrayAvailable():
+                self.tray_icon = TrayIcon(self)
+                self.tray_icon.showMessage("InternetSpeedTest", "Test completed...", self.tray_icon.MessageIcon.Information, 3000)
+
         except Exception as e:
-            logging_manager = LoggingManager()
-            logging_manager.write_log(str(e))
-            ErrorManager.filter_error(e, self)
+            setup_logger().error(str(e))
+            ErrorManager.show_error_message(str(e), self)

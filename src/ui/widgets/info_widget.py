@@ -2,7 +2,7 @@ from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QWidget, QFormLayout, QLabel
 
 from src.utility.error_manager import ErrorManager
-from src.utility.logging_manager import LoggingManager
+from src.utility.logging_manager import setup_logger
 
 
 class InfoWidget(QWidget):
@@ -40,6 +40,5 @@ class InfoWidget(QWidget):
             self.location_result_label.setText(server_location)
             self.time_result_label.setText(time_test)
         except Exception as e:
-            logging_manager = LoggingManager()
-            logging_manager.write_log(str(e))
-            ErrorManager.filter_error(e, self)
+            setup_logger().error(str(e))
+            ErrorManager.show_error_message(str(e), self)

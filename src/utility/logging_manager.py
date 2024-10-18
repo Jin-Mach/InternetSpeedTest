@@ -1,18 +1,18 @@
-import pathlib
 import logging
 from logging.handlers import RotatingFileHandler
+import pathlib
 
 logging_file = pathlib.Path.joinpath(pathlib.Path(__file__).parent.parent, "data", "speed_test_logs.log")
 
+def setup_logger() -> logging.Logger:
+    formater = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(filename)s:%(lineno)d - %(funcName)s() - %(message)s')
 
-class LoggingManager:
-    def __init__(self) -> None:
-        self.logger = logging.getLogger(__name__)
-        self.logger.setLevel(logging.WARNING)
-        handler = RotatingFileHandler(logging_file, mode="a", encoding="utf-8", maxBytes=5*1024*1024, backupCount=1)
-        formater = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
-        handler.setFormatter(formater)
-        self.logger.addHandler(handler)
+    handler = RotatingFileHandler(logging_file, mode="a", encoding="utf-8", maxBytes=5 * 1024 * 1024, backupCount=1)
+    handler.setFormatter(formater)
 
-    def write_log(self, error_message: str) -> None:
-        self.logger.error(error_message)
+    logger = logging.getLogger(pathlib.Path(__name__).name)
+    logger.setLevel(logging.WARNING)
+    if not logger.hasHandlers():
+        logger.addHandler(handler)
+
+    return logger

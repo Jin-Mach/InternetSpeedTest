@@ -2,7 +2,7 @@ from PyQt6.QtCore import Qt, QThread
 from PyQt6.QtWidgets import QDialog, QVBoxLayout, QProgressBar, QPushButton, QHBoxLayout, QWidget, QLabel
 
 from src.utility.error_manager import ErrorManager
-from src.utility.logging_manager import LoggingManager
+from src.utility.logging_manager import setup_logger
 
 
 # noinspection PyUnresolvedReferences
@@ -11,11 +11,11 @@ class ProgressDialog(QDialog):
         super().__init__(parent)
         self.thread = thread
         self.thread.error_signal.connect(self.show_error)
-        self.thread.signal.connect(self.test_completed)
+
+        self.thread.result_signal.connect(self.test_completed)
         self.thread.start()
         self.result_widget = result_widget
         self.info_widget = info_widget
-        self.logging_manager = LoggingManager()
         self.setWindowTitle("Just a Moment...")
         self.setFixedSize(300, 100)
         self.create_gui()
@@ -67,8 +67,8 @@ class ProgressDialog(QDialog):
             self.info_widget.update_info(server_provider, server_location, time_test)
             self.accept()
         except Exception as e:
-            self.logging_manager.write_log(str(e))
-            ErrorManager.filter_error(e, self)
+            setup_logger().error(str(e))
+            ErrorManager.show_error_message(str(e), self)
 
     def cancel_thread(self) -> None:
         self.thread.stop_thread()
@@ -76,8 +76,7 @@ class ProgressDialog(QDialog):
 
     def show_error(self, exception: Exception) -> None:
         self.close()
-        self.logging_manager.write_log(str(exception))
-        ErrorManager.filter_error(exception, self)
+        ErrorManager.show_error_message(str(exception), self)
 
     def closeEvent(self, event) -> None:
         self.thread.stop_thread()

@@ -2,14 +2,13 @@ import speedtest
 from datetime import datetime
 
 from PyQt6.QtCore import QThread, pyqtSignal
-from PyQt6.QtWidgets import QSystemTrayIcon
 
-from src.utility.tray_icon import TrayIcon
+from src.utility.logging_manager import setup_logger
 
 
 # noinspection PyUnresolvedReferences
 class SpeedTest(QThread):
-    signal = pyqtSignal(int, float, float, str, str, str)
+    result_signal = pyqtSignal(int, float, float, str, str, str)
     error_signal = pyqtSignal(str)
 
     def __init__(self, parent=None) -> None:
@@ -30,14 +29,12 @@ class SpeedTest(QThread):
             time_stamp = datetime.fromisoformat(speed_test.results.timestamp.replace("Z", "+00:00"))
             test_time = time_stamp.strftime("%d.%m.%Y %H:%M:%S")
 
-            self.signal.emit(ping, download, upload, server_provider, server_location, test_time)
+            self.result_signal.emit(ping, download, upload, server_provider, server_location, test_time)
 
-            if QSystemTrayIcon.isSystemTrayAvailable():
-                tray_icon = TrayIcon(self)
-                tray_icon.showMessage("InternetSpeedTest", "Test completed...", tray_icon.MessageIcon.Information, 3000)
         except Exception as e:
-            self.error_signal.emit(str(e))
+            setup_logger().error(str(e))
             self.stop_thread()
+            self.error_signal.emit(str(e))
 
     def stop_thread(self) -> None:
         self.running = False
