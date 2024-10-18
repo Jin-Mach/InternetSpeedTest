@@ -2,7 +2,7 @@ import pathlib
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon, QFont
-from PyQt6.QtWidgets import QWidget, QLabel, QHBoxLayout, QVBoxLayout
+from PyQt6.QtWidgets import QWidget, QLabel, QHBoxLayout, QVBoxLayout, QFrame
 
 from src.utility.error_manager import ErrorManager
 from src.utility.logging_manager import LoggingManager
@@ -40,9 +40,12 @@ class ResultWidget(QWidget):
 
         self.setLayout(main_layout)
 
-    def create_widget(self, icon: str, title: str, result: QLabel, units: str) -> QWidget:
-        widget = QWidget()
-        layout = QVBoxLayout()
+    def create_widget(self, icon: str, title: str, result: QLabel, units: str) -> QFrame:
+        widget_frame = QFrame()
+        widget_frame.setFrameShape(QFrame.Shape.Box)
+        widget_frame.setLineWidth(1)
+
+        layout = QVBoxLayout(widget_frame)
 
         icon_label = QLabel()
         icon_pixmap = QIcon(icon).pixmap(20, 20)
@@ -69,8 +72,9 @@ class ResultWidget(QWidget):
         layout.addWidget(units_label)
         layout.addStretch()
 
-        widget.setLayout(layout)
-        return widget
+        widget_frame.setLayout(layout)
+
+        return widget_frame
 
     def update_results(self, ping_result: int, download_result: float, upload_result: float) -> None:
         try:

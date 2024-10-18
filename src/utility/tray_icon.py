@@ -1,6 +1,6 @@
 import pathlib
 
-from PyQt6.QtGui import QIcon, QAction, QCursor
+from PyQt6.QtGui import QIcon, QAction
 from PyQt6.QtWidgets import QSystemTrayIcon, QMenu, QApplication
 
 tray_icon = str(pathlib.Path(__file__).parent.parent.joinpath("icons", "application_icon.png"))
@@ -8,7 +8,7 @@ tray_icon = str(pathlib.Path(__file__).parent.parent.joinpath("icons", "applicat
 
 # noinspection PyUnresolvedReferences
 class TrayIcon(QSystemTrayIcon):
-    def __init__(self,parent=None):
+    def __init__(self,parent=None) -> None:
         super().__init__(parent)
         self.setIcon(QIcon(tray_icon))
         self.setToolTip("InternetSpeedTest")
@@ -22,5 +22,5 @@ class TrayIcon(QSystemTrayIcon):
         self.setContextMenu(context_menu)
 
     @staticmethod
-    def close_application():
+    def close_application() -> None:
         QApplication.quit()

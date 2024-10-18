@@ -21,7 +21,7 @@ class MainWindow(QMainWindow):
         super().__init__(parent)
         self.setWindowTitle("Internet Speed Test")
         self.setWindowIcon(QIcon(application_icon))
-        self.setFixedSize(400, 400)
+        self.setFixedSize(450, 350)
         self.create_gui()
         TrayIcon(self)
 

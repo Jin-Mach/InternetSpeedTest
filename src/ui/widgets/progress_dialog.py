@@ -1,5 +1,5 @@
 from PyQt6.QtCore import Qt, QThread
-from PyQt6.QtWidgets import QDialog, QVBoxLayout, QProgressBar, QPushButton, QHBoxLayout, QWidget, QMessageBox
+from PyQt6.QtWidgets import QDialog, QVBoxLayout, QProgressBar, QPushButton, QHBoxLayout, QWidget, QLabel
 
 from src.utility.error_manager import ErrorManager
 from src.utility.logging_manager import LoggingManager
@@ -16,18 +16,35 @@ class ProgressDialog(QDialog):
         self.result_widget = result_widget
         self.info_widget = info_widget
         self.logging_manager = LoggingManager()
-        self.setWindowTitle("Just a Moment... Testing Your Connection...")
-        self.setFixedSize(300, 70)
+        self.setWindowTitle("Just a Moment...")
+        self.setFixedSize(300, 100)
         self.create_gui()
 
     def create_gui(self) -> None:
         main_layout = QVBoxLayout()
 
+        progress_label = QLabel("Testing your connection...")
+        progress_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
         progress_bar = QProgressBar()
         progress_bar.setOrientation(Qt.Orientation.Horizontal)
         progress_bar.setRange(0, 0)
+        progress_bar.setFixedHeight(10)
         progress_bar.setValue(0)
         progress_bar.setTextVisible(False)
+
+        progress_bar.setStyleSheet("""
+            QProgressBar {
+                border: 2px solid #444;
+                border-radius: 2px;
+                text-align: center;
+                background-color: #565656;
+            }
+            QProgressBar::chunk {
+                background-color: #00489b;
+                width: 5px;
+            }
+        """)
 
         button_layout = QHBoxLayout()
         cancel_button = QPushButton("Cancel")
@@ -37,6 +54,7 @@ class ProgressDialog(QDialog):
         cancel_button.clicked.connect(self.cancel_thread)
         button_layout.addWidget(cancel_button)
 
+        main_layout.addWidget(progress_label)
         main_layout.addWidget(progress_bar)
         main_layout.addStretch()
         main_layout.addLayout(button_layout)
@@ -60,3 +78,6 @@ class ProgressDialog(QDialog):
         self.close()
         self.logging_manager.write_log(str(exception))
         ErrorManager.filter_error(exception, self)
+
+    def closeEvent(self, event) -> None:
+        self.thread.stop_thread()

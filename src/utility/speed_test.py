@@ -34,7 +34,7 @@ class SpeedTest(QThread):
 
             if QSystemTrayIcon.isSystemTrayAvailable():
                 tray_icon = TrayIcon(self)
-                tray_icon.showMessage("xxx", "Test completed...", tray_icon.MessageIcon.Information, 3000)
+                tray_icon.showMessage("InternetSpeedTest", "Test completed...", tray_icon.MessageIcon.Information, 3000)
         except Exception as e:
             self.error_signal.emit(str(e))
             self.stop_thread()
