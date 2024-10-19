@@ -10,6 +10,7 @@ from src.ui.widgets.progress_dialog import ProgressDialog
 from src.utility.speed_test import SpeedTest
 from src.utility.error_manager import ErrorManager
 from src.utility.logging_manager import setup_logger
+from src.utility.tray_icon import TrayIcon
 
 application_icon = str(pathlib.Path(__file__).parent.parent.joinpath("icons", "application_icon.png"))
 
@@ -22,6 +23,7 @@ class MainWindow(QMainWindow):
         self.setWindowIcon(QIcon(application_icon))
         self.setFixedSize(450, 350)
         self.create_gui()
+        TrayIcon(self)
 
     def create_gui(self) -> None:
         central_widget = QWidget()
