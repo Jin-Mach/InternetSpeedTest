@@ -11,7 +11,6 @@ class ProgressDialog(QDialog):
         super().__init__(parent)
         self.thread = thread
         self.thread.error_signal.connect(self.show_error)
-
         self.thread.result_signal.connect(self.test_completed)
         self.thread.start()
         self.result_widget = result_widget
@@ -22,17 +21,14 @@ class ProgressDialog(QDialog):
 
     def create_gui(self) -> None:
         main_layout = QVBoxLayout()
-
         progress_label = QLabel("Testing your connection...")
         progress_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
         progress_bar = QProgressBar()
         progress_bar.setOrientation(Qt.Orientation.Horizontal)
         progress_bar.setRange(0, 0)
         progress_bar.setFixedHeight(10)
         progress_bar.setValue(0)
         progress_bar.setTextVisible(False)
-
         progress_bar.setStyleSheet("""
             QProgressBar {
                 border: 2px solid #444;
@@ -45,7 +41,6 @@ class ProgressDialog(QDialog):
                 width: 5px;
             }
         """)
-
         button_layout = QHBoxLayout()
         cancel_button = QPushButton("Cancel")
         cancel_button.setFixedSize(100, 30)
@@ -53,7 +48,6 @@ class ProgressDialog(QDialog):
         cancel_button.setToolTipDuration(5000)
         cancel_button.clicked.connect(self.cancel_thread)
         button_layout.addWidget(cancel_button)
-
         main_layout.addWidget(progress_label)
         main_layout.addWidget(progress_bar)
         main_layout.addStretch()

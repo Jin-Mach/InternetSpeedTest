@@ -1,8 +1,7 @@
 import pathlib
 
 from PyQt6.QtGui import QIcon, QAction
-from PyQt6.QtWidgets import QSystemTrayIcon, QMenu, QApplication, QMainWindow
-
+from PyQt6.QtWidgets import QSystemTrayIcon, QMenu, QApplication
 
 tray_icon = str(pathlib.Path(__file__).parent.parent.joinpath("icons", "application_icon.png"))
 
@@ -14,12 +13,10 @@ class TrayIcon(QSystemTrayIcon):
         self.setIcon(QIcon(tray_icon))
         self.setToolTip("InternetSpeedTest")
         self.setVisible(True)
-
         context_menu = QMenu()
         self.exit_application = QAction("Exit application")
         self.exit_application.triggered.connect(self.close_application)
         context_menu.addAction(self.exit_application)
-
         context_menu.setStyleSheet("""
             QMenu {
                 background-color: #565656;
@@ -31,7 +28,6 @@ class TrayIcon(QSystemTrayIcon):
                 color: #ffffff;
             }
         """)
-
         self.setContextMenu(context_menu)
 
     @staticmethod

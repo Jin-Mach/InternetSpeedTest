@@ -20,7 +20,6 @@ class SpeedTest(QThread):
         try:
             speed_test = speedtest.Speedtest(secure=True)
             best_server = speed_test.get_best_server()
-
             ping = int(speed_test.results.ping)
             download = round(speed_test.download() / 1_000_000, 2)
             upload = round(speed_test.upload() / 1_000_000, 2)
@@ -28,9 +27,7 @@ class SpeedTest(QThread):
             server_location = best_server["country"]
             time_stamp = datetime.fromisoformat(speed_test.results.timestamp.replace("Z", "+00:00"))
             test_time = time_stamp.strftime("%d.%m.%Y %H:%M:%S")
-
             self.result_signal.emit(ping, download, upload, server_provider, server_location, test_time)
-
         except Exception as e:
             setup_logger().error(str(e))
             self.stop_thread()

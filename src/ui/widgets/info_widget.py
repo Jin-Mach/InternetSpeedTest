@@ -15,7 +15,6 @@ class InfoWidget(QWidget):
 
     def create_gui(self) -> None:
         main_layout = QFormLayout()
-
         provider_text_label = QLabel("Provider: ")
         provider_text_label.setFont(self.basic_font)
         self.provider_result_label = QLabel("N/A")
@@ -28,7 +27,6 @@ class InfoWidget(QWidget):
         time_text_label.setFont(self.basic_font)
         self.time_result_label = QLabel("N/A")
         self.time_result_label.setFont(self.basic_font)
-
         main_layout.addRow(provider_text_label, self.provider_result_label)
         main_layout.addRow(location_text_label, self.location_result_label)
         main_layout.addRow(time_text_label, self.time_result_label)

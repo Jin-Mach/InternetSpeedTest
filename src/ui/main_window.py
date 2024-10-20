@@ -29,18 +29,17 @@ class MainWindow(QMainWindow):
         central_widget = QWidget()
         main_layout = QVBoxLayout()
         main_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
-
         self.result_widget = ResultWidget(self)
         self.info_widget = InfoWidget(self)
-
         button_layout = QHBoxLayout()
-        start_test_button = QPushButton("Test")
+        start_test_button = QPushButton("Start test")
         start_test_button.setFixedSize(120, 30)
+        start_test_button.setToolTip("Start internet connection test")
+        start_test_button.setToolTipDuration(5000)
         start_test_button.clicked.connect(self.start_test)
         button_layout.addStretch()
         button_layout.addWidget(start_test_button)
         button_layout.addStretch()
-
         main_layout.addWidget(self.result_widget)
         main_layout.addWidget(self.info_widget)
         main_layout.addStretch()

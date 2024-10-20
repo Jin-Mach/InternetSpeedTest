@@ -52,5 +52,15 @@ To run the application, execute the following command:
 ## License
 This project is licensed under the MIT License.
 
+## Credits
+Icons used in this project are sourced from Icons8.
+- Application icon
+- Ping icon
+- Download icon
+- Upload icon
+- Question mark icon
+
+For more icons, visit: [Icons8](https://icons8.com).
+
 ## Contact
 For any questions or feedback, feel free to reach out to me on my GitHub profile: [GitHub](https://github.com/Jin-Mach).
