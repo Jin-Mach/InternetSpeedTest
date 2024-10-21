@@ -38,5 +38,11 @@ class InfoWidget(QWidget):
             self.location_result_label.setText(server_location)
             self.time_result_label.setText(time_test)
         except Exception as e:
+            self.reset_widget()
             setup_logger().error(str(e))
             ErrorManager.show_error_message(str(e), self)
+
+    def reset_widget(self) -> None:
+        self.provider_result_label.setText("N/A")
+        self.location_result_label.setText("N/A")
+        self.time_result_label.setText("N/A")

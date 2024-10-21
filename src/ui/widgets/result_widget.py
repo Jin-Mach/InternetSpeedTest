@@ -116,6 +116,7 @@ class ResultWidget(QWidget):
                 self.tray_icon = TrayIcon(self)
                 self.tray_icon.showMessage("InternetSpeedTest", "Test completed...", self.tray_icon.MessageIcon.Information, 3000)
         except Exception as e:
+            self.reset_widget()
             setup_logger().error(str(e))
             ErrorManager.show_error_message(str(e), self)
 
@@ -148,3 +149,9 @@ class ResultWidget(QWidget):
             background_color = "red"
         self.upload_color.setStyleSheet(f"background-color: {background_color};")
         self.upload_label.setText(str(result))
+
+    def reset_widget(self) -> None:
+        for label in (self.ping_label, self.upload_label, self.download_label):
+            label.setText("N/A")
+        for color in (self.ping_color, self.download_color, self.upload_color):
+            color.setStyleSheet(f"background-color: #565656;")

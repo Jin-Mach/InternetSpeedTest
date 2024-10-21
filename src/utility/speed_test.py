@@ -8,8 +8,7 @@ from src.utility.logging_manager import setup_logger
 
 # noinspection PyUnresolvedReferences
 class SpeedTest(QThread):
-    result_signal = pyqtSignal(int, float, float, str, str, str)
-    error_signal = pyqtSignal(str)
+    result_signal = pyqtSignal(int, float, float, str, str, str, str)
 
     def __init__(self, parent=None) -> None:
         super().__init__()
@@ -27,11 +26,11 @@ class SpeedTest(QThread):
             server_location = best_server["country"]
             time_stamp = datetime.fromisoformat(speed_test.results.timestamp.replace("Z", "+00:00"))
             test_time = time_stamp.strftime("%d.%m.%Y %H:%M:%S")
-            self.result_signal.emit(ping, download, upload, server_provider, server_location, test_time)
+            self.result_signal.emit(ping, download, upload, server_provider, server_location, test_time, "none")
         except Exception as e:
             setup_logger().error(str(e))
             self.stop_thread()
-            self.error_signal.emit(str(e))
+            self.result_signal.emit(-1, -1.0, -1.0, "none", "none", "none", str(e))
 
     def stop_thread(self) -> None:
         self.running = False

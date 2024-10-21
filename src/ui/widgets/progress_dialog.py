@@ -10,7 +10,6 @@ class ProgressDialog(QDialog):
     def __init__(self, thread: QThread, result_widget: QWidget, info_widget: QWidget, parent=None) -> None:
         super().__init__(parent)
         self.thread = thread
-        self.thread.error_signal.connect(self.show_error)
         self.thread.result_signal.connect(self.test_completed)
         self.thread.start()
         self.result_widget = result_widget
@@ -55,22 +54,26 @@ class ProgressDialog(QDialog):
         self.setLayout(main_layout)
 
     def test_completed(self, ping: int, download: float, upload: float, server_provider: str, server_location: str,
-                       time_test: str) -> None:
-        try:
-            self.result_widget.update_results(ping, download, upload)
-            self.info_widget.update_info(server_provider, server_location, time_test)
-            self.accept()
-        except Exception as e:
-            setup_logger().error(str(e))
-            ErrorManager.show_error_message(str(e), self)
+                       time_test: str, exception: str) -> None:
+        if ping > 0:
+            try:
+                self.result_widget.update_results(ping, download, upload)
+                self.info_widget.update_info(server_provider, server_location, time_test)
+                self.accept()
+                return
+            except Exception as e:
+                setup_logger().error(str(e))
+                ErrorManager.show_error_message(str(e), self)
+        else:
+            setup_logger().error(str(exception))
+            ErrorManager.show_error_message(str(exception), self)
+        self.reject()
+        self.result_widget.reset_widget()
+        self.info_widget.reset_widget()
 
     def cancel_thread(self) -> None:
         self.thread.stop_thread()
         self.reject()
-
-    def show_error(self, exception: Exception) -> None:
-        self.close()
-        ErrorManager.show_error_message(str(exception), self)
 
     def closeEvent(self, event) -> None:
         self.thread.stop_thread()
