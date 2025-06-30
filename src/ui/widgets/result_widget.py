@@ -8,12 +8,13 @@ from src.utility.error_manager import ErrorManager
 from src.utility.logging_manager import setup_logger
 from src.utility.tray_icon import TrayIcon
 
-base_directory = pathlib.Path(__file__).parent.parent.parent
+base_directory = pathlib.Path(__file__).parent.parent.parent.joinpath("icons")
+base_directory.mkdir(parents=True, exist_ok=True)
 
-ping_icon = str(pathlib.Path.joinpath(base_directory, "icons", "ping_icon.png"))
-download_icon = str(pathlib.Path.joinpath(base_directory, "icons", "download_icon.png"))
-upload_icon = str(pathlib.Path.joinpath(base_directory, "icons", "upload_icon.png"))
-tooltip_icon = str(pathlib.Path.joinpath(base_directory, "icons", "tooltip_icon.png"))
+ping_icon = str(pathlib.Path.joinpath(base_directory, "ping_icon.png"))
+download_icon = str(pathlib.Path.joinpath(base_directory, "download_icon.png"))
+upload_icon = str(pathlib.Path.joinpath(base_directory, "upload_icon.png"))
+tooltip_icon = str(pathlib.Path.joinpath(base_directory, "tooltip_icon.png"))
 
 
 class ResultWidget(QWidget):

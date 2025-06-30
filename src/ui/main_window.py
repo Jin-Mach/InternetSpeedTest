@@ -1,7 +1,4 @@
-import pathlib
-
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QPushButton, QHBoxLayout
 
 from src.ui.widgets.result_widget import ResultWidget
@@ -12,15 +9,12 @@ from src.utility.error_manager import ErrorManager
 from src.utility.logging_manager import setup_logger
 from src.utility.tray_icon import TrayIcon
 
-application_icon = str(pathlib.Path(__file__).parent.parent.joinpath("icons", "application_icon.png"))
-
 
 # noinspection PyUnresolvedReferences
 class MainWindow(QMainWindow):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
         self.setWindowTitle("Internet Speed Test")
-        self.setWindowIcon(QIcon(application_icon))
         self.setFixedSize(450, 350)
         self.create_gui()
         TrayIcon(self)

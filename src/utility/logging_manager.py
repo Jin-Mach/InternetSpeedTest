@@ -3,6 +3,7 @@ from logging.handlers import RotatingFileHandler
 import pathlib
 
 logging_file = pathlib.Path.joinpath(pathlib.Path(__file__).parent.parent, "data", "speed_test_logs.log")
+logging_file.parent.mkdir(parents=True, exist_ok=True)
 
 def setup_logger() -> logging.Logger:
     formater = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(filename)s:%(lineno)d - %(funcName)s() - %(message)s')
